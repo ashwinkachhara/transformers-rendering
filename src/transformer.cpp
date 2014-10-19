@@ -9,9 +9,16 @@
 #include <unistd.h>
 
 GLuint torso_tex;
+GLuint skybox_dn, skybox_up, skybox_lf, skybox_rt, skybox_ft, skybox_bk;
 
 void init_textures(void){
 	torso_tex = loadTexture("texture/paris.bmp");
+	skybox_dn = loadTexture("texture/skybox/dn.bmp");
+	skybox_up = loadTexture("texture/skybox/up.bmp");
+	skybox_lf = loadTexture("texture/skybox/lf.bmp");
+	skybox_rt = loadTexture("texture/skybox/rt.bmp");
+	skybox_ft = loadTexture("texture/skybox/ft.bmp");
+	skybox_bk = loadTexture("texture/skybox/bk.bmp");
 }
 
 int main(int argc, char** argv){
@@ -26,7 +33,7 @@ int main(int argc, char** argv){
 	return -1;
 
 	//! Create a windowed mode window and its OpenGL context
-	window = glfwCreateWindow(800, 800, "CS475 Assignment 2.1 | 10D070048 | 10D070001", NULL, NULL);
+	window = glfwCreateWindow(800, 800, "CS475 Assignment 2.2 | 10D070048 | 10D070001", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();

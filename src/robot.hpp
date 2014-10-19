@@ -80,11 +80,13 @@
 
 #define TF_DELAY_uS 100000
 
+#define ENV_SIZE 20
 
 
 extern int state, prevState;
 
 extern GLuint torso_tex;
+extern GLuint skybox_dn, skybox_up, skybox_rt, skybox_lf, skybox_ft, skybox_bk;
 
 void renderGL(void);
 void init_structures(void);

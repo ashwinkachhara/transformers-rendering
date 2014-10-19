@@ -450,16 +450,16 @@ void init_structures(){
 	struct_right_foot_wing();
 }
 
-void draw_enviornment(){
+void draw_environment(){
 		//~ Creating Surface
 	glPushMatrix();
 		//~ glColor4f(0.5,0.5,1,1);
 		//~ drawSphereInwards(5,60);
 		
-		glTranslatef(0,-3,0);
+		glTranslatef(0,-ENV_SIZE/2,0);
 		glEnable(GL_TEXTURE_2D);
 		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glBindTexture(GL_TEXTURE_2D, torso_tex);
+		glBindTexture(GL_TEXTURE_2D, skybox_dn);
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -475,13 +475,162 @@ void draw_enviornment(){
 		    
 		    glColor4f(1,1,1,1);
 		    glTexCoord2f(1.0f, 1.0f);
-		    glVertex3f(  10, 0, 10 );
+		    glVertex3f(  ENV_SIZE, 0, ENV_SIZE );
 		    glTexCoord2f(1.0f, 0.0f);
-		    glVertex3f(  10, 0, -10 );
+		    glVertex3f(  ENV_SIZE, 0, -ENV_SIZE );
 		    glTexCoord2f(0.0f, 0.0f);
-		    glVertex3f( -10, 0, -10 );
+		    glVertex3f( -ENV_SIZE, 0, -ENV_SIZE );
 		    glTexCoord2f(0.0f, 1.0f);
-		    glVertex3f( -10, 0, 10 );
+		    glVertex3f( -ENV_SIZE, 0, ENV_SIZE );
+	    glEnd();
+	    glDisable(GL_TEXTURE_2D);
+	    
+	    glTranslatef(0, ENV_SIZE, 0);
+	    glEnable(GL_TEXTURE_2D);
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glBindTexture(GL_TEXTURE_2D, skybox_up);
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		
+		
+		glBegin(GL_QUADS);
+			
+			glNormal3f(0, -1, 0);// Front
+		    
+		    glColor4f(1,1,1,1);
+		    glTexCoord2f(1.0f, 1.0f);
+		    glVertex3f(  ENV_SIZE, 0, ENV_SIZE );
+		    glTexCoord2f(1.0f, 0.0f);
+		    glVertex3f(  -ENV_SIZE, 0, ENV_SIZE );
+		    glTexCoord2f(0.0f, 0.0f);
+		    glVertex3f( -ENV_SIZE, 0, -ENV_SIZE );
+		    glTexCoord2f(0.0f, 1.0f);
+		    glVertex3f( ENV_SIZE, 0, -ENV_SIZE );
+	    glEnd();
+	    glDisable(GL_TEXTURE_2D);
+	    
+	
+	
+		glTranslatef(ENV_SIZE/2, -ENV_SIZE/2, 0);
+	    glEnable(GL_TEXTURE_2D);
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glBindTexture(GL_TEXTURE_2D, skybox_rt);
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		
+		
+		glBegin(GL_QUADS);
+			
+			glNormal3f(-1, 0, 0);// Front
+		    
+		    glColor4f(1,1,1,1);
+		    glTexCoord2f(1.0f, 1.0f);
+		    glVertex3f( 0, ENV_SIZE, ENV_SIZE );
+		    glTexCoord2f(0.0f, 1.0f);
+		    glVertex3f( 0, ENV_SIZE, -ENV_SIZE );
+		    glTexCoord2f(0.0f, 0.0f);
+		    glVertex3f( 0, -ENV_SIZE, -ENV_SIZE );
+		    glTexCoord2f(1.0f, 0.0f);
+		    glVertex3f( 0, -ENV_SIZE, ENV_SIZE );
+	    glEnd();
+	    glDisable(GL_TEXTURE_2D);
+	    
+	
+	
+		glTranslatef(-ENV_SIZE, 0, 0);
+	    glEnable(GL_TEXTURE_2D);
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glBindTexture(GL_TEXTURE_2D, skybox_lf);
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		
+		
+		glBegin(GL_QUADS);
+			
+			glNormal3f(1, 0, 0);// Front
+		    
+		    glColor4f(1,1,1,1);
+		    glTexCoord2f(0.0f, 1.0f);
+		    glVertex3f( 0, ENV_SIZE, ENV_SIZE );
+		    glTexCoord2f(0.0f, 0.0f);
+		    glVertex3f( 0, -ENV_SIZE, ENV_SIZE );
+		    glTexCoord2f(1.0f, 0.0f);
+		    glVertex3f( 0, -ENV_SIZE, -ENV_SIZE );
+		    glTexCoord2f(1.0f, 1.0f);
+		    glVertex3f( 0, ENV_SIZE, -ENV_SIZE );
+	    glEnd();
+	    glDisable(GL_TEXTURE_2D);
+	    
+	    glTranslatef(ENV_SIZE/2, 0, ENV_SIZE/2);
+	    glEnable(GL_TEXTURE_2D);
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glBindTexture(GL_TEXTURE_2D, skybox_bk);
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		
+		
+		glBegin(GL_QUADS);
+			
+			glNormal3f(0, 0, -1);// Front
+		    
+		    glColor4f(1,1,1,1);
+		    glTexCoord2f(1.0f, 1.0f);
+		    glVertex3f( ENV_SIZE, ENV_SIZE, 0 );
+		    glTexCoord2f(1.0f, 0.0f);
+		    glVertex3f( ENV_SIZE, -ENV_SIZE, 0 );
+		    glTexCoord2f(0.0f, 0.0f);
+		    glVertex3f( -ENV_SIZE, -ENV_SIZE, 0 );
+		    glTexCoord2f(0.0f, 1.0f);
+		    glVertex3f( -ENV_SIZE, ENV_SIZE, 0 );
+	    glEnd();
+	    glDisable(GL_TEXTURE_2D);
+	    
+	    glTranslatef(0, 0, -ENV_SIZE);
+	    glEnable(GL_TEXTURE_2D);
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glBindTexture(GL_TEXTURE_2D, skybox_ft);
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		
+		
+		glBegin(GL_QUADS);
+			
+			glNormal3f(0, 0, 1);// Front
+		    
+		    glColor4f(1,1,1,1);
+		    glTexCoord2f(1.0f, 1.0f);
+		    glVertex3f( ENV_SIZE, ENV_SIZE, 0 );
+		    glTexCoord2f(0.0f, 1.0f);
+		    glVertex3f( -ENV_SIZE, ENV_SIZE, 0 );
+		    glTexCoord2f(0.0f, 0.0f);
+		    glVertex3f( -ENV_SIZE, -ENV_SIZE, 0 );
+		    glTexCoord2f(1.0f, 0.0f);
+		    glVertex3f( ENV_SIZE, -ENV_SIZE, 0 );
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D);
 	    
@@ -887,7 +1036,7 @@ void draw_robot(){
 }
 
 void initGL(void){
-	 glClearColor(0.5f, 0.5f, 1.0f,1.0f);
+	 //~ glClearColor(0.5f, 0.5f, 1.0f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glEnable(GL_CULL_FACE); 
@@ -929,9 +1078,12 @@ void renderGL(void){
 	gluLookAt(2*sin(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 2*sin(y_angle*2*PI/360), 2*cos(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 0, 0, 0, -sin(x_angle*2*PI/360)*sin(y_angle*2*PI/360), cos(y_angle*2*PI/360), -cos(x_angle*2*PI/360)*sin(y_angle*2*PI/360));
 	glPushMatrix();
 		
-		draw_enviornment();
-
-		draw_robot();
+		draw_environment();
+		glPushMatrix();
+			glScalef(0.5, 0.5, 0.5);
+			//~ glTranslatef(0, 5, 0);
+			draw_robot();
+		glPopMatrix();
 	glPopMatrix();
 	
 	
