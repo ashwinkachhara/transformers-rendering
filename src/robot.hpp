@@ -91,5 +91,7 @@ extern GLuint skybox_dn, skybox_up, skybox_rt, skybox_lf, skybox_ft, skybox_bk;
 void renderGL(void);
 void init_structures(void);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void reset_angles_H(void);
+void transform(void);
 
 #endif

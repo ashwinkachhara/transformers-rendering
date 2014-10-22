@@ -72,6 +72,11 @@ int main(int argc, char** argv){
 	init_textures();
 	// Loop until the user closes the window
 	
+	
+	//~ Initializing transformer in state = sVEHICLE 
+	reset_angles_H();
+	transform();
+	
 	while (glfwWindowShouldClose(window) == 0)
 	{
 
@@ -85,7 +90,7 @@ int main(int argc, char** argv){
 			// Poll for and process events
 			glfwPollEvents();
 		} else {
-			usleep(TF_DELAY_uS);
+			//~ usleep(TF_DELAY_uS);
 			//~ right_hip_rot.set(20, 50, 82);
 		}
 	}

@@ -30,6 +30,11 @@ class vector{
 float y_angle = -45;
 float x_angle = 35.264;
 
+
+
+float fwdpos = 0, sidepos = 0, elevpos = 0;
+float yaw = 0, pitch = 0, roll = 0;
+
 int state = sHUMANOID, prevState = sHUMANOID;
 
 float torso_width, torso_length;
@@ -47,7 +52,7 @@ vector head_size(0.2, 0.3, 0.2);
 float right_elbow_angle = 0, left_elbow_angle = 0;
 float right_knee_angle = 0, left_knee_angle = 0;
 float left_foot_wing_angle = 90, right_foot_wing_angle = 90;
-int blade_direction = 180,heli_chest_rot=0, blade_gap=15;
+int blade_direction = 180, heli_chest_rot=0, blade_gap=15;
 
 vector neck_rot(0, 0, 0);
 vector right_shoulder_rot(0, 0, 0), left_shoulder_rot(0, 0, 0);
@@ -60,6 +65,11 @@ vector tf_neck_translate(0, 0, 0);
 vector tf_left_leg_translt(0, 0, 0); vector tf_right_leg_translt(0, 0, 0);
 
 vector color_dark(0.3,0.3,0.3), color_grey(0.7,0.7,0.7), color_light(1,1,0.9), color_red(0.5,0,0);
+
+//~ vector effective_env_size(ENV_SIZE/2 - upper_torso_size.x/2-upper_arm_size.y/2-lower_arm_size.y/2-rotor_blade_body.y, ENV_SIZE/2 - upper_torso_size.z, 
+							//~ ENV_SIZE/2 - upper_torso_size.y/2 - lower_torso_size.y - thigh_size.y - leg_size.y - foot_size.y);
+							
+vector effective_env_size((ENV_SIZE/2)-5, (ENV_SIZE/2)-5, (ENV_SIZE/2)-5);			
 
 //~ Go back to base position in sHUMANOID
 void reset_angles_H(){
@@ -390,6 +400,7 @@ void struct_right_foot(void){
 		
 	glEndList();
 }
+
 void struct_right_foot_wing(void){
 	glNewList(right_foot_wing, GL_COMPILE);
 		glColor4f(color_dark.x, color_dark.y, color_dark.z, 1.0);
@@ -475,13 +486,13 @@ void draw_environment(){
 		    
 		    glColor4f(1,1,1,1);
 		    glTexCoord2f(1.0f, 1.0f);
-		    glVertex3f(  ENV_SIZE, 0, ENV_SIZE );
+		    glVertex3f(  ENV_SIZE/2, 0, ENV_SIZE/2 );
 		    glTexCoord2f(1.0f, 0.0f);
-		    glVertex3f(  ENV_SIZE, 0, -ENV_SIZE );
+		    glVertex3f(  ENV_SIZE/2, 0, -ENV_SIZE/2 );
 		    glTexCoord2f(0.0f, 0.0f);
-		    glVertex3f( -ENV_SIZE, 0, -ENV_SIZE );
+		    glVertex3f( -ENV_SIZE/2, 0, -ENV_SIZE/2 );
 		    glTexCoord2f(0.0f, 1.0f);
-		    glVertex3f( -ENV_SIZE, 0, ENV_SIZE );
+		    glVertex3f( -ENV_SIZE/2, 0, ENV_SIZE/2 );
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D);
 	    
@@ -504,13 +515,13 @@ void draw_environment(){
 		    
 		    glColor4f(1,1,1,1);
 		    glTexCoord2f(1.0f, 1.0f);
-		    glVertex3f(  ENV_SIZE, 0, ENV_SIZE );
+		    glVertex3f(  ENV_SIZE/2, 0, ENV_SIZE/2 );
 		    glTexCoord2f(1.0f, 0.0f);
-		    glVertex3f(  -ENV_SIZE, 0, ENV_SIZE );
+		    glVertex3f(  -ENV_SIZE/2, 0, ENV_SIZE/2 );
 		    glTexCoord2f(0.0f, 0.0f);
-		    glVertex3f( -ENV_SIZE, 0, -ENV_SIZE );
+		    glVertex3f( -ENV_SIZE/2, 0, -ENV_SIZE/2);
 		    glTexCoord2f(0.0f, 1.0f);
-		    glVertex3f( ENV_SIZE, 0, -ENV_SIZE );
+		    glVertex3f( ENV_SIZE/2, 0, -ENV_SIZE/2 );
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D);
 	    
@@ -535,13 +546,13 @@ void draw_environment(){
 		    
 		    glColor4f(1,1,1,1);
 		    glTexCoord2f(1.0f, 1.0f);
-		    glVertex3f( 0, ENV_SIZE, ENV_SIZE );
+		    glVertex3f( 0, ENV_SIZE/2, ENV_SIZE/2 );
 		    glTexCoord2f(0.0f, 1.0f);
-		    glVertex3f( 0, ENV_SIZE, -ENV_SIZE );
+		    glVertex3f( 0, ENV_SIZE/2, -ENV_SIZE/2 );
 		    glTexCoord2f(0.0f, 0.0f);
-		    glVertex3f( 0, -ENV_SIZE, -ENV_SIZE );
+		    glVertex3f( 0, -ENV_SIZE/2, -ENV_SIZE/2 );
 		    glTexCoord2f(1.0f, 0.0f);
-		    glVertex3f( 0, -ENV_SIZE, ENV_SIZE );
+		    glVertex3f( 0, -ENV_SIZE/2, ENV_SIZE/2 );
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D);
 	    
@@ -566,13 +577,13 @@ void draw_environment(){
 		    
 		    glColor4f(1,1,1,1);
 		    glTexCoord2f(0.0f, 1.0f);
-		    glVertex3f( 0, ENV_SIZE, ENV_SIZE );
+		    glVertex3f( 0, ENV_SIZE/2, ENV_SIZE/2 );
 		    glTexCoord2f(0.0f, 0.0f);
-		    glVertex3f( 0, -ENV_SIZE, ENV_SIZE );
+		    glVertex3f( 0, -ENV_SIZE/2, ENV_SIZE/2 );
 		    glTexCoord2f(1.0f, 0.0f);
-		    glVertex3f( 0, -ENV_SIZE, -ENV_SIZE );
+		    glVertex3f( 0, -ENV_SIZE/2, -ENV_SIZE/2 );
 		    glTexCoord2f(1.0f, 1.0f);
-		    glVertex3f( 0, ENV_SIZE, -ENV_SIZE );
+		    glVertex3f( 0, ENV_SIZE/2, -ENV_SIZE/2);
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D);
 	    
@@ -595,13 +606,13 @@ void draw_environment(){
 		    
 		    glColor4f(1,1,1,1);
 		    glTexCoord2f(1.0f, 1.0f);
-		    glVertex3f( ENV_SIZE, ENV_SIZE, 0 );
+		    glVertex3f( ENV_SIZE/2, ENV_SIZE/2, 0 );
 		    glTexCoord2f(1.0f, 0.0f);
-		    glVertex3f( ENV_SIZE, -ENV_SIZE, 0 );
+		    glVertex3f( ENV_SIZE/2, -ENV_SIZE/2, 0 );
 		    glTexCoord2f(0.0f, 0.0f);
-		    glVertex3f( -ENV_SIZE, -ENV_SIZE, 0 );
+		    glVertex3f( -ENV_SIZE/2, -ENV_SIZE/2, 0 );
 		    glTexCoord2f(0.0f, 1.0f);
-		    glVertex3f( -ENV_SIZE, ENV_SIZE, 0 );
+		    glVertex3f( -ENV_SIZE/2, ENV_SIZE/2, 0 );
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D);
 	    
@@ -624,13 +635,13 @@ void draw_environment(){
 		    
 		    glColor4f(1,1,1,1);
 		    glTexCoord2f(1.0f, 1.0f);
-		    glVertex3f( ENV_SIZE, ENV_SIZE, 0 );
+		    glVertex3f( ENV_SIZE/2, ENV_SIZE/2, 0 );
 		    glTexCoord2f(0.0f, 1.0f);
-		    glVertex3f( -ENV_SIZE, ENV_SIZE, 0 );
+		    glVertex3f( -ENV_SIZE/2, ENV_SIZE/2, 0 );
 		    glTexCoord2f(0.0f, 0.0f);
-		    glVertex3f( -ENV_SIZE, -ENV_SIZE, 0 );
+		    glVertex3f( -ENV_SIZE/2, -ENV_SIZE/2, 0 );
 		    glTexCoord2f(1.0f, 0.0f);
-		    glVertex3f( ENV_SIZE, -ENV_SIZE, 0 );
+		    glVertex3f( ENV_SIZE/2, -ENV_SIZE/2, 0 );
 	    glEnd();
 	    glDisable(GL_TEXTURE_2D);
 	    
@@ -1080,8 +1091,12 @@ void renderGL(void){
 		
 		draw_environment();
 		glPushMatrix();
-			glScalef(0.5, 0.5, 0.5);
-			//~ glTranslatef(0, 5, 0);
+			
+			glTranslatef(sidepos, elevpos, fwdpos);
+			glRotatef(yaw, 0, 1, 0);
+			glRotatef(pitch, 1, 0, 0);
+			glRotatef(roll, 0, 0, 1);
+			glScalef(0.2, 0.2, 0.2);
 			draw_robot();
 		glPopMatrix();
 	glPopMatrix();
@@ -1093,111 +1108,68 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//!Close the window if the ESC key was pressed
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-	//~ Change Viewpoint with Arrow Keys
-	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
-		x_angle += 10;
-	else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-		x_angle -= 10;
+	//~ sideways and forward movement
+	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
+		if (sidepos > -effective_env_size.x)
+			sidepos -= 0.5;
+	}
+	else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS){
+		if (sidepos < effective_env_size.x)
+			sidepos += 0.5;
+	}
 	else if (key == GLFW_KEY_UP && action == GLFW_PRESS){
-		if(y_angle < 90) y_angle += 10;}
+		if (fwdpos < effective_env_size.z)
+			fwdpos += 0.5;
+	}
 	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
-		if(y_angle > -90) y_angle -= 10;}
+		if (-fwdpos < effective_env_size.z)
+			fwdpos -= 0.5;
+	}
+	//~ upward and downward movement
+	else if (key == GLFW_KEY_E && action == GLFW_PRESS){
+		if (elevpos < effective_env_size.y)
+			elevpos += 0.5;
+	}
+	else if (key == GLFW_KEY_C && action == GLFW_PRESS){
+		if (-elevpos < effective_env_size.y)
+			elevpos -= 0.5;
+	}
 	
-	//~ Rotate Elbows and Knees
-	else if (key == GLFW_KEY_1 && action == GLFW_PRESS)
-		right_elbow_angle += 10;
-	else if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-		right_elbow_angle -= 10;
-	else if (key == GLFW_KEY_3 && action == GLFW_PRESS)
-		left_elbow_angle += 10;
-	else if (key == GLFW_KEY_4 && action == GLFW_PRESS)
-		left_elbow_angle -= 10;
-	else if (key == GLFW_KEY_5 && action == GLFW_PRESS)
-		right_knee_angle += 10;
-	else if (key == GLFW_KEY_6 && action == GLFW_PRESS)
-		right_knee_angle -= 10;
-	else if (key == GLFW_KEY_7 && action == GLFW_PRESS)
-		left_knee_angle += 10;
-	else if (key == GLFW_KEY_8 && action == GLFW_PRESS)
-		left_knee_angle -= 10;
-		
-	//~ Rotate neck and head
-	else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
-		neck_rot.x += 10;
-	else if (key == GLFW_KEY_W && action == GLFW_PRESS)
-		neck_rot.x -= 10;
-	else if (key == GLFW_KEY_A && action == GLFW_PRESS)
-		neck_rot.y += 10;
-	else if (key == GLFW_KEY_S && action == GLFW_PRESS)
-		neck_rot.y -= 10;
-	else if (key == GLFW_KEY_Z && action == GLFW_PRESS)
-		neck_rot.z += 10;
-	else if (key == GLFW_KEY_X && action == GLFW_PRESS)
-		neck_rot.z -= 10;
+	//~ viewpoint adjustment
+	else if (key == GLFW_KEY_W && action == GLFW_PRESS){
+		if(y_angle < 90) y_angle += 10;
+	}
+	else if (key == GLFW_KEY_A && action == GLFW_PRESS){
+		x_angle -= 10;
+	}
+	else if (key == GLFW_KEY_S && action == GLFW_PRESS){
+		if(y_angle > -90) y_angle -= 10;
+	}
+	else if (key == GLFW_KEY_D && action == GLFW_PRESS){
+		x_angle += 10;
+	}
 	
-	//~ Rotate Right shoulder
-	else if (key == GLFW_KEY_E && action == GLFW_PRESS)
-		right_shoulder_rot.x -= 10;
-	else if (key == GLFW_KEY_D && action == GLFW_PRESS)
-		right_shoulder_rot.y -= 10;
-	else if (key == GLFW_KEY_C && action == GLFW_PRESS)
-		right_shoulder_rot.z -= 10;
+	//~ change orientation of vehicle - yaw, pitch, roll
+	else if (key == GLFW_KEY_R && action == GLFW_PRESS){
+		yaw+=10;
+	}
+	else if (key == GLFW_KEY_T && action == GLFW_PRESS){
+		yaw-=10;
+	}
+	else if (key == GLFW_KEY_F && action == GLFW_PRESS){
+		pitch+=10;
+	}
+	else if (key == GLFW_KEY_G && action == GLFW_PRESS){
+		pitch-=10;
+	}
+	else if (key == GLFW_KEY_V && action == GLFW_PRESS){
+		roll+=10;
+	}
+	else if (key == GLFW_KEY_B && action == GLFW_PRESS){
+		roll-=10;
+	}
 	
-	//~ Rotate left shoulder	
-	else if (key == GLFW_KEY_R && action == GLFW_PRESS)
-		left_shoulder_rot.x -= 10;
-	else if (key == GLFW_KEY_F && action == GLFW_PRESS)
-		left_shoulder_rot.y -= 10;
-	else if (key == GLFW_KEY_V && action == GLFW_PRESS)
-		left_shoulder_rot.z -= 10;
-		
-	//~ Rotate right hip	
-	else if (key == GLFW_KEY_T && action == GLFW_PRESS)
-		right_hip_rot.x -= 10;
-	else if (key == GLFW_KEY_G && action == GLFW_PRESS)
-		right_hip_rot.y -= 10;
-	else if (key == GLFW_KEY_B && action == GLFW_PRESS)
-		right_hip_rot.z -= 10;
-		
-	//~ Rotate left hip	
-	else if (key == GLFW_KEY_Y && action == GLFW_PRESS)
-		left_hip_rot.x -= 10;
-	else if (key == GLFW_KEY_H && action == GLFW_PRESS)
-		left_hip_rot.y -= 10;
-	else if (key == GLFW_KEY_N && action == GLFW_PRESS)
-		left_hip_rot.z -= 10;
-		
-	//~ Rotate right hand	
-	else if (key == GLFW_KEY_U && action == GLFW_PRESS)
-		right_hand_rot.x -= 10;
-	else if (key == GLFW_KEY_J && action == GLFW_PRESS)
-		right_hand_rot.y -= 10;
-	else if (key == GLFW_KEY_M && action == GLFW_PRESS)
-		right_hand_rot.z -= 10;
-		
-	//~ Rotate left hand	
-	else if (key == GLFW_KEY_I && action == GLFW_PRESS)
-		left_hand_rot.x -= 10;
-	else if (key == GLFW_KEY_K && action == GLFW_PRESS)
-		left_hand_rot.y -= 10;
-	else if (key == GLFW_KEY_COMMA && action == GLFW_PRESS)
-		left_hand_rot.z -= 10;
-		
-	//~ Rotate right foot	
-	else if (key == GLFW_KEY_O && action == GLFW_PRESS)
-		right_foot_rot.x -= 10;
-	else if (key == GLFW_KEY_L && action == GLFW_PRESS)
-		right_foot_rot.y -= 10;
-	else if (key == GLFW_KEY_PERIOD && action == GLFW_PRESS)
-		right_foot_rot.z -= 10;
-		
-	//~ Rotate left foot	
-	else if (key == GLFW_KEY_P && action == GLFW_PRESS)
-		left_foot_rot.x -= 10;
-	else if (key == GLFW_KEY_SEMICOLON && action == GLFW_PRESS)
-		left_foot_rot.y -= 10;
-	else if (key == GLFW_KEY_SLASH && action == GLFW_PRESS)
-		left_foot_rot.z -= 10;
+	
 	
 	//~ Transform	
 	else if (key == GLFW_KEY_TAB && action == GLFW_PRESS){
