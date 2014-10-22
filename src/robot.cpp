@@ -30,8 +30,6 @@ class vector{
 float y_angle = -45;
 float x_angle = 35.264;
 
-
-
 float fwdpos = 0, sidepos = 0, elevpos = 0;
 float yaw = 0, pitch = 0, roll = 0;
 
@@ -1097,6 +1095,8 @@ void renderGL(void){
 			glRotatef(pitch, 1, 0, 0);
 			glRotatef(roll, 0, 0, 1);
 			glScalef(0.2, 0.2, 0.2);
+			right_hand_rot.z+=70;
+			left_hand_rot.z+=30;
 			draw_robot();
 		glPopMatrix();
 	glPopMatrix();
