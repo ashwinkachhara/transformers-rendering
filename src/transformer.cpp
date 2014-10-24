@@ -10,6 +10,7 @@
 
 GLuint torso_tex;
 GLuint skybox_dn, skybox_up, skybox_lf, skybox_rt, skybox_ft, skybox_bk;
+GLuint cloud;
 
 void init_textures(void){
 	torso_tex = loadTexture("texture/paris.bmp");
@@ -19,6 +20,7 @@ void init_textures(void){
 	skybox_rt = loadTexture("texture/skybox/rt.bmp");
 	skybox_ft = loadTexture("texture/skybox/ft.bmp");
 	skybox_bk = loadTexture("texture/skybox/bk.bmp");
+	cloud = loadTexture("texture/cloud.bmp");
 }
 
 int main(int argc, char** argv){

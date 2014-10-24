@@ -472,6 +472,35 @@ void init_structures(){
 	struct_right_foot_wing();
 }
 
+void drawBillboard(float x, float y, float z){
+	glEnable(GL_TEXTURE_2D);
+	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, cloud);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	
+	gluLookAt(x,y,z, sidepos, elevpos, -fwdpos, 0, 1, 0);
+	glTranslatef(x,y,z);
+	glBegin(GL_QUADS);
+		
+		glColor4f(1,1,1,1);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f( BILLBOARD_SIZE/2, BILLBOARD_SIZE/2, 0 );
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f( -BILLBOARD_SIZE/2, BILLBOARD_SIZE/2, 0 );
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f( -BILLBOARD_SIZE/2, -BILLBOARD_SIZE/2, 0 );
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f( BILLBOARD_SIZE/2, -BILLBOARD_SIZE/2, 0 );
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+}
+
 void draw_environment(){
 		//~ Creating Surface
 	glPushMatrix();
@@ -657,7 +686,28 @@ void draw_environment(){
 	    glDisable(GL_TEXTURE_2D);
 	    
 	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(-3, 0, 3);
+		drawBillboard(0, 0, 0);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(-3, 0, -3);
+		drawBillboard(0, 0, 0);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(3, 0, 3);
+		drawBillboard(0, 0, 0);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(3, 0, -3);
+		drawBillboard(0, 0, 0);
+	glPopMatrix();
 }
+
 
 
 void draw_robot(){

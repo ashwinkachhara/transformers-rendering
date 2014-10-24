@@ -83,6 +83,7 @@
 #define MOTION_DELAY_uS 100
 
 #define ENV_SIZE 20
+#define BILLBOARD_SIZE 0.5
 
 #define CAMERA_GLOBAL 1
 #define CAMERA_POV 2
@@ -93,6 +94,7 @@ extern int state, prevState;
 
 extern GLuint torso_tex;
 extern GLuint skybox_dn, skybox_up, skybox_rt, skybox_lf, skybox_ft, skybox_bk;
+extern GLuint cloud;
 
 void renderGL(void);
 void movement(void);
