@@ -80,6 +80,7 @@
 #define TF_FOOT_WING_ANGLE_H 90
 
 #define TF_DELAY_uS 100000
+#define MOTION_DELAY_uS 100
 
 #define ENV_SIZE 20
 
@@ -94,6 +95,7 @@ extern GLuint torso_tex;
 extern GLuint skybox_dn, skybox_up, skybox_rt, skybox_lf, skybox_ft, skybox_bk;
 
 void renderGL(void);
+void movement(void);
 void init_structures(void);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void reset_angles_H(void);

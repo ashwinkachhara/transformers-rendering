@@ -32,6 +32,7 @@ float x_angle = 35.264;
 
 float fwdpos = 0, sidepos = 0, elevpos = 0;
 float yaw = 0, pitch = 0, roll = 0;
+int motion_time = 0, thrust=10;
 
 int state = sHUMANOID, prevState = sHUMANOID;
 
@@ -1116,6 +1117,27 @@ void renderGL(void){
 	
 }
 
+void movement(void){
+	
+	if (motion_time == 0){
+		motion_time = 1000;
+		return;
+	}
+	else motion_time--;
+
+	fwdpos += sin(pitch*2*PI/360)*cos(yaw*2*PI/360);
+	sidepos += sin(pitch*2*PI/360)*sin(yaw*2*PI/360);
+
+	fwdpos += sin(roll*2*PI/360)*sin(yaw*2*PI/360);
+	sidepos -= sin(roll*2*PI/360)*cos(yaw*2*PI/360);
+
+	elevpos += float(thrust-10)/1000;
+	
+	usleep(MOTION_DELAY_uS);
+
+}
+
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
 	//!Close the window if the ESC key was pressed
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -1123,28 +1145,38 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//~ sideways and forward movement
 	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
 		if (sidepos > -effective_env_size.x)
-			sidepos -= 0.5;
+			// fwdpos += 0.5*sin(yaw*2*PI/360);
+			// sidepos -= 0.5*cos(yaw*2*PI/360);
+			roll+=1;
 	}
 	else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS){
 		if (sidepos < effective_env_size.x)
-			sidepos += 0.5;
+			// fwdpos -= 0.5*sin(yaw*2*PI/360);
+			// sidepos += 0.5*cos(yaw*2*PI/360);
+			roll-=1;
 	}
 	else if (key == GLFW_KEY_UP && action == GLFW_PRESS){
 		if (fwdpos < effective_env_size.z)
-			fwdpos += 0.5;
+			// fwdpos += 0.5*cos(yaw*2*PI/360);
+			// sidepos += 0.5*sin(yaw*2*PI/360);
+			pitch+=1;
 	}
 	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
 		if (-fwdpos < effective_env_size.z)
-			fwdpos -= 0.5;
+			// fwdpos -= 0.5*cos(yaw*2*PI/360);
+			// sidepos -= 0.5*sin(yaw*2*PI/360);
+			pitch-=1;
 	}
 	//~ upward and downward movement
 	else if (key == GLFW_KEY_E && action == GLFW_PRESS){
 		if (elevpos < effective_env_size.y)
-			elevpos += 0.5;
+			thrust++;
+			// elevpos += 0.5;
 	}
 	else if (key == GLFW_KEY_C && action == GLFW_PRESS){
 		if (-elevpos < effective_env_size.y)
-			elevpos -= 0.5;
+			thrust--;
+			// elevpos -= 0.5;
 	}
 	
 	//~ viewpoint adjustment

@@ -82,7 +82,7 @@ int main(int argc, char** argv){
 
 		// Render here
 		renderGL();
-
+		movement();
 		// Swap front and back buffers
 		glfwSwapBuffers(window);
 		
