@@ -35,7 +35,6 @@ void drawCuboidTetrahedron(float l, float b, float h){
 	    glVertex3f( -l/2,  b/2, -h/2 );
 	    glVertex3f(  l/2,  b/2, -h/2 );
 	    
-	    
 	    //~ glNormal3f(1, 0, 0);// RIGHT
 	    float face_norm = sqrt(b*h*b*h+ l*h*l*h + l*b*l*b);
 	    glNormal3f(b*h/face_norm, l*h/face_norm, l*b/face_norm);
@@ -55,7 +54,36 @@ void drawCuboidTetrahedron(float l, float b, float h){
 	    glVertex3f(  l/2,  b/2, -h/2 );
 	    glVertex3f( -l/2,  b/2, -h/2 );
 	    
-  
+        
+
+        // // Inner side of tetrahedron
+        // glNormal3f(0, 0, 1); // Back
+        // glVertex3f( -l/2,  b/2, -h/2 );
+        // glVertex3f( 0, -b/2, -h/2 );
+        // glVertex3f(  l/2,  b/2, -h/2 );
+        
+
+        // //~ glNormal3f(1, 0, 0);// RIGHT
+        // glNormal3f(-b*h/face_norm, -l*h/face_norm, -l*b/face_norm);
+        // glVertex3f( 0, -b/2, -h/2 );
+        // glVertex3f( 0,  b/2,  h/2 );
+        // glVertex3f(  l/2,  b/2, -h/2 );
+        
+
+        // //~ glNormal3f(-1, 0, 0);// LEFT
+        // glNormal3f(b*h/face_norm, -l*h/face_norm, -l*b/face_norm);
+        // glVertex3f(  0,  b/2,  h/2 );
+        // glVertex3f( 0, -b/2, -h/2 );
+        // glVertex3f(  -l/2,  b/2, -h/2 );
+        
+        
+        // // glColor4f(1,0,1,1);
+        // glNormal3f(0, -1, 0);// TOP
+        // glVertex3f(  l/2,  b/2, -h/2 );
+        // glVertex3f(  0,  b/2,  h/2 );
+        // glVertex3f( -l/2,  b/2, -h/2 );
+        
+
   glEnd();
 }
 

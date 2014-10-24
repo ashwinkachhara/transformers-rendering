@@ -1067,7 +1067,7 @@ void initGL(void){
 	glLoadIdentity();
 	glEnable(GL_CULL_FACE); 
 	
-	//~ glEnable(GL_NORMALIZE);
+	// glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_AUTO_NORMAL);
@@ -1108,18 +1108,19 @@ void renderGL(void){
 	//~ glRotatef( x_angle, 1.0, 0.0, 0.0);
 	//~ glRotatef( y_angle, 0.0, 1.0, 0.0);
 	
-	if (camera_state == CAMERA_GLOBAL)
+	if (camera_state == CAMERA_GLOBAL){
 		gluLookAt(2*sin(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 2*sin(y_angle*2*PI/360), 2*cos(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 0, 0, 0, -sin(x_angle*2*PI/360)*sin(y_angle*2*PI/360), cos(y_angle*2*PI/360), -cos(x_angle*2*PI/360)*sin(y_angle*2*PI/360));
-	else if (camera_state == CAMERA_FOLLOW)
-		gluLookAt(sidepos, elevpos + 0.005, fwdpos - 0.005, sidepos, elevpos, fwdpos, 0, 1, 0);
+	}
+	else if (camera_state == CAMERA_FOLLOW){
+		gluLookAt(sidepos, elevpos - 1.4, fwdpos+0.65, sidepos, elevpos-4, fwdpos+2, 0, 0, 1);
+	}
 	else if (camera_state == CAMERA_POV){
 		// gluLookAt(sidepos, elevpos+1.1, fwdpos+1.65, sidepos + cos(pitch*DEG2RAD)*sin(yaw*DEG2RAD), elevpos + upper_torso_size.y/2 + cos(pitch*DEG2RAD)*cos(yaw*DEG2RAD), fwdpos+1.9 + sin(pitch*DEG2RAD), 0, 1, 0);
 		
-		eye_pov.x = sidepos + 2.0*sin(yaw*2*PI/360)*cos(pitch*DEG2RAD);
-		eye_pov.y = elevpos - 2.0*sin(pitch*DEG2RAD);
-		eye_pov.z = fwdpos + 2.0*cos(yaw*2*PI/360)*cos(pitch*DEG2RAD);
-		// center_pov.x = sin(yaw*2*PI/360);
-		// center_pov.z = cos(yaw*2*PI/360);
+		eye_pov.x = sidepos + 2.02*sin(yaw*2*PI/360)*cos(pitch*DEG2RAD);
+		eye_pov.y = elevpos - 2.02*sin(pitch*DEG2RAD);
+		eye_pov.z = fwdpos  + 2.02*cos(yaw*2*PI/360)*cos(pitch*DEG2RAD);
+		
 		gluLookAt(eye_pov.x, eye_pov.y, eye_pov.z, eye_pov.x + cos(pitch*DEG2RAD)*sin(yaw*DEG2RAD), eye_pov.y - sin(pitch*DEG2RAD), eye_pov.z + cos(pitch*DEG2RAD)*cos(yaw*DEG2RAD), -sin(roll*DEG2RAD)*cos(yaw*DEG2RAD), cos(roll*DEG2RAD), sin(roll*DEG2RAD)*sin(yaw*DEG2RAD) );
 		//~ gluLookAt(sidepos, elevpos + upper_torso_size.y/2, fwdpos+1.9, 0, 0, ENV_SIZE, 0, 1, 0);
 	}
