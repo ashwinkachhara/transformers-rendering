@@ -11,6 +11,7 @@
 #include <iostream>
 
 #define PI 3.1416
+#define DEG2RAD 2*PI/360
 
 #define head 1
 #define neck 2
@@ -81,6 +82,10 @@
 #define TF_DELAY_uS 100000
 
 #define ENV_SIZE 20
+
+#define CAMERA_GLOBAL 1
+#define CAMERA_POV 2
+#define CAMERA_FOLLOW 3
 
 
 extern int state, prevState;

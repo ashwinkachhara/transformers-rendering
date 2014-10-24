@@ -67,7 +67,9 @@ vector color_dark(0.3,0.3,0.3), color_grey(0.7,0.7,0.7), color_light(1,1,0.9), c
 //~ vector effective_env_size(ENV_SIZE/2 - upper_torso_size.x/2-upper_arm_size.y/2-lower_arm_size.y/2-rotor_blade_body.y, ENV_SIZE/2 - upper_torso_size.z, 
 							//~ ENV_SIZE/2 - upper_torso_size.y/2 - lower_torso_size.y - thigh_size.y - leg_size.y - foot_size.y);
 							
-vector effective_env_size((ENV_SIZE/2)-5, (ENV_SIZE/2)-5, (ENV_SIZE/2)-5);			
+vector effective_env_size((ENV_SIZE/2)-5, (ENV_SIZE/2)-5, (ENV_SIZE/2)-5);		
+
+int camera_state = 2;	
 
 //~ Go back to base position in sHUMANOID
 void reset_angles_H(){
@@ -1045,7 +1047,11 @@ void draw_robot(){
 }
 
 void initGL(void){
+	
+	 
 	 //~ glClearColor(0.5f, 0.5f, 1.0f,1.0f);
+	 
+	 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glEnable(GL_CULL_FACE); 
@@ -1075,16 +1081,20 @@ void initGL(void){
 void renderGL(void){
   
 	initGL();
-
 	
-	
-	glMatrixMode(GL_MODELVIEW);
 	gluPerspective(120,1,0.1,20);
-	//~ gluLookAt(0,0,2, 0, 0, 0, 0, 1,0);
+	gluLookAt(0,0,2, 0, 0, 0, 0, 1,0);
 	//~ glRotatef( x_angle, 1.0, 0.0, 0.0);
 	//~ glRotatef( y_angle, 0.0, 1.0, 0.0);
 	
-	gluLookAt(2*sin(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 2*sin(y_angle*2*PI/360), 2*cos(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 0, 0, 0, -sin(x_angle*2*PI/360)*sin(y_angle*2*PI/360), cos(y_angle*2*PI/360), -cos(x_angle*2*PI/360)*sin(y_angle*2*PI/360));
+	if (camera_state == CAMERA_GLOBAL)
+		gluLookAt(2*sin(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 2*sin(y_angle*2*PI/360), 2*cos(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 0, 0, 0, -sin(x_angle*2*PI/360)*sin(y_angle*2*PI/360), cos(y_angle*2*PI/360), -cos(x_angle*2*PI/360)*sin(y_angle*2*PI/360));
+	else if (camera_state == CAMERA_FOLLOW)
+		gluLookAt(sidepos, elevpos + 0.005, fwdpos - 0.005, sidepos, elevpos, fwdpos, 0, 1, 0);
+	else if (camera_state == CAMERA_POV)
+		gluLookAt(sidepos, elevpos + upper_torso_size.y/2, fwdpos+1.9, sidepos + cos(pitch*DEG2RAD)*sin(yaw*DEG2RAD), elevpos + upper_torso_size.y/2 + cos(pitch*DEG2RAD)*cos(yaw*DEG2RAD), fwdpos+1.9 + sin(pitch*DEG2RAD), 0, 1, 0);
+		//~ gluLookAt(sidepos, elevpos + upper_torso_size.y/2, fwdpos+1.9, 0, 0, ENV_SIZE, 0, 1, 0);
+	
 	glPushMatrix();
 		
 		draw_environment();
@@ -1095,11 +1105,13 @@ void renderGL(void){
 			glRotatef(pitch, 1, 0, 0);
 			glRotatef(roll, 0, 0, 1);
 			glScalef(0.2, 0.2, 0.2);
-			right_hand_rot.z+=70;
+			right_hand_rot.z+=30;
 			left_hand_rot.z+=30;
 			draw_robot();
 		glPopMatrix();
 	glPopMatrix();
+	
+	
 	
 	
 }
@@ -1169,7 +1181,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		roll-=10;
 	}
 	
-	
+	//~ camera modes
+	else if (key == GLFW_KEY_1 && action == GLFW_PRESS){
+		camera_state = CAMERA_GLOBAL;
+	}
+	else if (key == GLFW_KEY_2 && action == GLFW_PRESS){
+		camera_state = CAMERA_POV;
+	}
+	else if (key == GLFW_KEY_3 && action == GLFW_PRESS){
+		camera_state = CAMERA_FOLLOW;
+	}
 	
 	//~ Transform	
 	else if (key == GLFW_KEY_TAB && action == GLFW_PRESS){
