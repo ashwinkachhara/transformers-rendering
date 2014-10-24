@@ -26,11 +26,14 @@ class vector{
 	}
 };
 
+GLfloat spot_light_position[] = {0.1f, 0.1f, 0.0f, 0.0f};
+GLfloat spot_direction[] = {0.0f, 1.0f, 0.0f};
 
 float y_angle = -45;
 float x_angle = 35.264;
 
 float fwdpos = 0, sidepos = 0, elevpos = 0;
+float new_fwdpos, new_sidepos, new_elevpos;
 float yaw = 0, pitch = 0, roll = 0;
 int motion_time = 0, thrust=10;
 
@@ -206,7 +209,12 @@ void struct_torso(void){
 	glNewList(torso, GL_COMPILE);
 		glColor4f(color_grey.x, color_grey.y, color_grey.z, 1.0);
 		drawCuboidSolid(upper_torso_size.x, upper_torso_size.y, upper_torso_size.z);
-				
+		
+			// GLfloat spot_light[] = {0.0, 0.0, -upper_torso_size.z,0.0};	
+			// glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 20.0);
+			// GLfloat spot_direction[] = {0,0,-1.0,0.0};
+			// glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
+		
 		glTranslatef(0, -lower_torso_size.y/2-upper_torso_size.y/2, 0);
 		drawCuboidSolid(lower_torso_size.x, lower_torso_size.y, lower_torso_size.z);
 	glEndList();
@@ -1068,6 +1076,7 @@ void initGL(void){
 
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	glEnable (GL_LIGHT0);
+	glEnable (GL_LIGHT1);
 
 	GLfloat global_ambient[] = { 0.4, 0.4, 0.4, 1 };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
@@ -1075,6 +1084,15 @@ void initGL(void){
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
 	GLfloat light_position[] = { 1.0f, 0.5f, 0, 0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	
+	
+	// GLfloat spot_light_specular[] = {1.0f,1.0f,1.0f,1.0f};
+	// GLfloat spot_diffuse_specular[] = {1.0f,1.0f,1.0f,1.0f};
+	// glLightfv(GL_LIGHT1, GL_SPECULAR, spot_light_specular);
+	// glLightfv(GL_LIGHT1, GL_DIFFUSE, spot_diffuse_specular);
+	// glLightfv(GL_LIGHT1, GL_POSITION, spot_light_position);
+	// glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
+	// glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 20);
 	
 
 }
@@ -1125,14 +1143,22 @@ void movement(void){
 	}
 	else motion_time--;
 
-	fwdpos += sin(pitch*2*PI/360)*cos(yaw*2*PI/360);
-	sidepos += sin(pitch*2*PI/360)*sin(yaw*2*PI/360);
+	new_fwdpos = fwdpos + sin(pitch*2*PI/360)*cos(yaw*2*PI/360);
+	new_sidepos = sidepos + sin(pitch*2*PI/360)*sin(yaw*2*PI/360);
 
-	fwdpos += sin(roll*2*PI/360)*sin(yaw*2*PI/360);
-	sidepos -= sin(roll*2*PI/360)*cos(yaw*2*PI/360);
+	new_fwdpos = new_fwdpos + sin(roll*2*PI/360)*sin(yaw*2*PI/360);
+	new_sidepos = new_sidepos - sin(roll*2*PI/360)*cos(yaw*2*PI/360);
 
-	elevpos += float(thrust-10)/1000;
+	new_elevpos = elevpos + float(thrust-10)/1000;
+
+	if(new_sidepos > -effective_env_size.x && new_sidepos < effective_env_size.x) sidepos = new_sidepos;
+	if(new_fwdpos > -effective_env_size.z && new_fwdpos < effective_env_size.z) fwdpos = new_fwdpos;
+	if(new_elevpos > -effective_env_size.y && new_elevpos < effective_env_size.y) elevpos = new_elevpos;
 	
+	// sidepos = new_sidepos;
+	// fwdpos = new_fwdpos;
+	// elevpos = new_elevpos;
+
 	usleep(MOTION_DELAY_uS);
 
 }
@@ -1144,37 +1170,37 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	//~ sideways and forward movement
 	else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
-		if (sidepos > -effective_env_size.x)
+		// if (sidepos > -effective_env_size.x)
 			// fwdpos += 0.5*sin(yaw*2*PI/360);
 			// sidepos -= 0.5*cos(yaw*2*PI/360);
 			roll+=1;
 	}
 	else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS){
-		if (sidepos < effective_env_size.x)
+		// if (sidepos < effective_env_size.x)
 			// fwdpos -= 0.5*sin(yaw*2*PI/360);
 			// sidepos += 0.5*cos(yaw*2*PI/360);
 			roll-=1;
 	}
 	else if (key == GLFW_KEY_UP && action == GLFW_PRESS){
-		if (fwdpos < effective_env_size.z)
+		// if (fwdpos < effective_env_size.z)
 			// fwdpos += 0.5*cos(yaw*2*PI/360);
 			// sidepos += 0.5*sin(yaw*2*PI/360);
 			pitch+=1;
 	}
 	else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
-		if (-fwdpos < effective_env_size.z)
+		// if (-fwdpos < effective_env_size.z)
 			// fwdpos -= 0.5*cos(yaw*2*PI/360);
 			// sidepos -= 0.5*sin(yaw*2*PI/360);
 			pitch-=1;
 	}
 	//~ upward and downward movement
 	else if (key == GLFW_KEY_E && action == GLFW_PRESS){
-		if (elevpos < effective_env_size.y)
+		// if (elevpos < effective_env_size.y)
 			thrust++;
 			// elevpos += 0.5;
 	}
 	else if (key == GLFW_KEY_C && action == GLFW_PRESS){
-		if (-elevpos < effective_env_size.y)
+		// if (-elevpos < effective_env_size.y)
 			thrust--;
 			// elevpos -= 0.5;
 	}
@@ -1195,22 +1221,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	
 	//~ change orientation of vehicle - yaw, pitch, roll
 	else if (key == GLFW_KEY_R && action == GLFW_PRESS){
-		yaw+=10;
+		yaw+=5;
 	}
 	else if (key == GLFW_KEY_T && action == GLFW_PRESS){
-		yaw-=10;
+		yaw-=5;
 	}
 	else if (key == GLFW_KEY_F && action == GLFW_PRESS){
-		pitch+=10;
+		pitch+=5;
 	}
 	else if (key == GLFW_KEY_G && action == GLFW_PRESS){
-		pitch-=10;
+		pitch-=5;
 	}
 	else if (key == GLFW_KEY_V && action == GLFW_PRESS){
-		roll+=10;
+		roll+=5;
 	}
 	else if (key == GLFW_KEY_B && action == GLFW_PRESS){
-		roll-=10;
+		roll-=5;
 	}
 	
 	//~ camera modes
