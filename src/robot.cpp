@@ -1311,15 +1311,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	
 	//~ Transform	
-	else if (key == GLFW_KEY_TAB && action == GLFW_PRESS){
-		if (state == sHUMANOID){
-			reset_angles_H();
-			transform();
-		}
-		else if (state == sVEHICLE){
-			reset_angles_V();
-			untransform();
-		}
-	}
+	//~ else if (key == GLFW_KEY_TAB && action == GLFW_PRESS){
+		//~ if (state == sHUMANOID){
+			//~ reset_angles_H();
+			//~ transform();
+		//~ }
+		//~ else if (state == sVEHICLE){
+			//~ reset_angles_V();
+			//~ untransform();
+		//~ }
+	//~ }
 	
 }
