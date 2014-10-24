@@ -26,8 +26,10 @@ class vector{
 	}
 };
 
+vector eye_pov, center_pov;
+
 GLfloat spot_light_position[] = {0.1f, 0.1f, 0.0f, 0.0f};
-GLfloat spot_direction[] = {0.0f, 1.0f, 0.0f};
+GLfloat spot_direction[] = {1.0f, 0.0f, 0.0f};
 
 float y_angle = -45;
 float x_angle = 35.264;
@@ -1059,7 +1061,7 @@ void initGL(void){
 	
 	 
 	 //~ glClearColor(0.5f, 0.5f, 1.0f,1.0f);
-	 
+
 	 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -1110,10 +1112,17 @@ void renderGL(void){
 		gluLookAt(2*sin(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 2*sin(y_angle*2*PI/360), 2*cos(x_angle*2*PI/360)*cos(y_angle*2*PI/360), 0, 0, 0, -sin(x_angle*2*PI/360)*sin(y_angle*2*PI/360), cos(y_angle*2*PI/360), -cos(x_angle*2*PI/360)*sin(y_angle*2*PI/360));
 	else if (camera_state == CAMERA_FOLLOW)
 		gluLookAt(sidepos, elevpos + 0.005, fwdpos - 0.005, sidepos, elevpos, fwdpos, 0, 1, 0);
-	else if (camera_state == CAMERA_POV)
-		gluLookAt(sidepos, elevpos + upper_torso_size.y/2, fwdpos+1.9, sidepos + cos(pitch*DEG2RAD)*sin(yaw*DEG2RAD), elevpos + upper_torso_size.y/2 + cos(pitch*DEG2RAD)*cos(yaw*DEG2RAD), fwdpos+1.9 + sin(pitch*DEG2RAD), 0, 1, 0);
+	else if (camera_state == CAMERA_POV){
+		// gluLookAt(sidepos, elevpos+1.1, fwdpos+1.65, sidepos + cos(pitch*DEG2RAD)*sin(yaw*DEG2RAD), elevpos + upper_torso_size.y/2 + cos(pitch*DEG2RAD)*cos(yaw*DEG2RAD), fwdpos+1.9 + sin(pitch*DEG2RAD), 0, 1, 0);
+		
+		eye_pov.x = sidepos + 2.0*sin(yaw*2*PI/360)*cos(pitch*DEG2RAD);
+		eye_pov.y = elevpos - 2.0*sin(pitch*DEG2RAD);
+		eye_pov.z = fwdpos + 2.0*cos(yaw*2*PI/360)*cos(pitch*DEG2RAD);
+		// center_pov.x = sin(yaw*2*PI/360);
+		// center_pov.z = cos(yaw*2*PI/360);
+		gluLookAt(eye_pov.x, eye_pov.y, eye_pov.z, eye_pov.x + cos(pitch*DEG2RAD)*sin(yaw*DEG2RAD), eye_pov.y - sin(pitch*DEG2RAD), eye_pov.z + cos(pitch*DEG2RAD)*cos(yaw*DEG2RAD), -sin(roll*DEG2RAD)*cos(yaw*DEG2RAD), cos(roll*DEG2RAD), sin(roll*DEG2RAD)*sin(yaw*DEG2RAD) );
 		//~ gluLookAt(sidepos, elevpos + upper_torso_size.y/2, fwdpos+1.9, 0, 0, ENV_SIZE, 0, 1, 0);
-	
+	}
 	glPushMatrix();
 		
 		draw_environment();
