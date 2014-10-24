@@ -20,7 +20,7 @@ void init_textures(void){
 	skybox_rt = loadTexture("texture/skybox/rt.bmp");
 	skybox_ft = loadTexture("texture/skybox/ft.bmp");
 	skybox_bk = loadTexture("texture/skybox/bk.bmp");
-	cloud = loadTexture("texture/cloud.bmp");
+	cloud = loadTexture("texture/smoketex.bmp");
 }
 
 int main(int argc, char** argv){
