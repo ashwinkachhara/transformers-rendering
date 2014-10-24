@@ -26,8 +26,8 @@ class vector{
 	}
 };
 
-GLfloat spot_light_position[] = {0.1f, 0.1f, 0.0f, 0.0f};
-GLfloat spot_direction[] = {0.0f, 1.0f, 0.0f};
+//~ GLfloat spot_position[] = {0.1f, 0.1f, 0.0f, 0.0f};
+//~ GLfloat spot_direction[] = {0.0f, 1.0f, 0.0f};
 
 float y_angle = -45;
 float x_angle = 35.264;
@@ -73,7 +73,7 @@ vector color_dark(0.3,0.3,0.3), color_grey(0.7,0.7,0.7), color_light(1,1,0.9), c
 							
 vector effective_env_size((ENV_SIZE/2)-5, (ENV_SIZE/2)-5, (ENV_SIZE/2)-5);		
 
-int camera_state = 2;	
+int camera_state = 3;	
 
 //~ Go back to base position in sHUMANOID
 void reset_angles_H(){
@@ -1075,8 +1075,7 @@ void initGL(void){
 	glFrontFace(GL_CCW);
 
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	glEnable (GL_LIGHT0);
-	glEnable (GL_LIGHT1);
+	
 
 	GLfloat global_ambient[] = { 0.4, 0.4, 0.4, 1 };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
@@ -1086,13 +1085,22 @@ void initGL(void){
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	
 	
-	// GLfloat spot_light_specular[] = {1.0f,1.0f,1.0f,1.0f};
-	// GLfloat spot_diffuse_specular[] = {1.0f,1.0f,1.0f,1.0f};
-	// glLightfv(GL_LIGHT1, GL_SPECULAR, spot_light_specular);
-	// glLightfv(GL_LIGHT1, GL_DIFFUSE, spot_diffuse_specular);
-	// glLightfv(GL_LIGHT1, GL_POSITION, spot_light_position);
-	// glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
-	// glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 20);
+	//~ GLfloat spot_ambient[] = {0.1f,0.1f,0.1f,1.0f};
+	GLfloat spot_diffuse[] = {1.0f,1.0f,1.0f,1.0f};
+	GLfloat spot_specular[] = {1.0f,1.0f,1.0f,1.0f};
+	GLfloat spot_position[] = {sidepos-upper_torso_size.x/2, elevpos-upper_torso_size.z/2, fwdpos, 0.0f};
+	GLfloat spot_direction[] = {0, -1, 0};
+	//~ glLightfv(GL_LIGHT1, GL_AMBIENT, spot_ambient);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, spot_specular);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, spot_diffuse);
+	glLightfv(GL_LIGHT1, GL_POSITION, spot_position);
+	glLightf (GL_LIGHT1, GL_SPOT_CUTOFF, 60);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
+	glLightf (GL_LIGHT1, GL_SPOT_EXPONENT, 100.0f);
+	
+	glEnable (GL_LIGHT0);
+	glEnable (GL_LIGHT1);
+	
 	
 
 }
@@ -1116,6 +1124,8 @@ void renderGL(void){
 	
 	glPushMatrix();
 		
+		GLfloat spot_position[] = {sidepos-upper_torso_size.x/2, elevpos-upper_torso_size.z/2, fwdpos, 1.0f};
+		GLfloat spot_direction[] = {0, -1, 0, 0};
 		draw_environment();
 		glPushMatrix();
 			
@@ -1127,6 +1137,9 @@ void renderGL(void){
 			right_hand_rot.z+=30;
 			left_hand_rot.z+=30;
 			draw_robot();
+			glLightfv(GL_LIGHT1, GL_POSITION, spot_position);
+			glLightf (GL_LIGHT1, GL_SPOT_CUTOFF, 60);
+			glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
 		glPopMatrix();
 	glPopMatrix();
 	
