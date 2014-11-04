@@ -1,5 +1,5 @@
 =================================================
-CS475 Computer Graphics | Assignment 2.1
+CS475 Computer Graphics | Assignment 2.2
 =================================================
 
 Ashwin Kachhara, 10D070048
